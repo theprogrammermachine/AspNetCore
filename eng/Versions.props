@@ -162,8 +162,7 @@
     <MicrosoftAspNetCoreRazorLanguagePackageVersion>3.0.0-preview7.19310.2</MicrosoftAspNetCoreRazorLanguagePackageVersion>
     <MicrosoftCodeAnalysisRazorPackageVersion>3.0.0-preview7.19310.2</MicrosoftCodeAnalysisRazorPackageVersion>
     <MicrosoftNETSdkRazorPackageVersion>3.0.0-preview7.19310.2</MicrosoftNETSdkRazorPackageVersion>
-    <MicrosoftNETCoreDotNetAppHostPackageVersion>
-    </MicrosoftNETCoreDotNetAppHostPackageVersion>
+    <MicrosoftNETCoreDotNetAppHostPackageVersion>3.0.0-preview7.19310.2</MicrosoftNETCoreDotNetAppHostPackageVersion>
   </PropertyGroup>
   <!--
 
