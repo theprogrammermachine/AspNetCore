@@ -60,9 +60,16 @@
     <!-- Packages from dotnet/arcade -->
     <MicrosoftDotNetGenAPIPackageVersion>1.0.0-beta.19302.2</MicrosoftDotNetGenAPIPackageVersion>
     <!-- Packages from dotnet/core-setup -->
+<<<<<<< HEAD
     <MicrosoftExtensionsDependencyModelPackageVersion>3.0.0-preview7-27809-08</MicrosoftExtensionsDependencyModelPackageVersion>
     <MicrosoftNETCoreAppPackageVersion>3.0.0-preview7-27809-08</MicrosoftNETCoreAppPackageVersion>
     <NETStandardLibraryRefPackageVersion>2.1.0-preview7-27809-08</NETStandardLibraryRefPackageVersion>
+=======
+    <MicrosoftExtensionsDependencyModelPackageVersion>3.0.0-preview6-27730-01</MicrosoftExtensionsDependencyModelPackageVersion>
+    <MicrosoftNETCoreAppPackageVersion>3.0.0-preview6-27730-01</MicrosoftNETCoreAppPackageVersion>
+    <MicrosoftNETCoreDotNetAppHostPackageVersion>3.0.0-preview6-27730-01</MicrosoftNETCoreDotNetAppHostPackageVersion>
+    <NETStandardLibraryRefPackageVersion>2.1.0-preview6-27730-01</NETStandardLibraryRefPackageVersion>
+>>>>>>> 8a735a2832... Updates
     <!-- Packages from dotnet/corefx -->
     <MicrosoftCSharpPackageVersion>4.6.0-preview7.19309.4</MicrosoftCSharpPackageVersion>
     <MicrosoftWin32RegistryPackageVersion>4.6.0-preview7.19309.4</MicrosoftWin32RegistryPackageVersion>
@@ -162,7 +169,6 @@
     <MicrosoftAspNetCoreRazorLanguagePackageVersion>3.0.0-preview7.19310.2</MicrosoftAspNetCoreRazorLanguagePackageVersion>
     <MicrosoftCodeAnalysisRazorPackageVersion>3.0.0-preview7.19310.2</MicrosoftCodeAnalysisRazorPackageVersion>
     <MicrosoftNETSdkRazorPackageVersion>3.0.0-preview7.19310.2</MicrosoftNETSdkRazorPackageVersion>
-    <MicrosoftNETCoreDotNetAppHostPackageVersion>3.0.0-preview7.19310.2</MicrosoftNETCoreDotNetAppHostPackageVersion>
   </PropertyGroup>
   <!--
 
