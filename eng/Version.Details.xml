@@ -381,10 +381,9 @@
       <Uri>https://github.com/dotnet/core-setup</Uri>
       <Sha>77fa4a1a04367dedd148389cbf2d9ffe64c5ac0f</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.NETCore.DotNetAppHost" Version="">
+    <Dependency Name="Microsoft.NETCore.DotNetAppHost" Version="3.0.0-preview6-27730-01">
       <Uri>https://github.com/dotnet/core-setup</Uri>
-      <Sha>
-      </Sha>
+      <Sha>63abc77da6d99470caa5bfa0465afe244105e595</Sha>
     </Dependency>
   </ProductDependencies>
   <ToolsetDependencies>
