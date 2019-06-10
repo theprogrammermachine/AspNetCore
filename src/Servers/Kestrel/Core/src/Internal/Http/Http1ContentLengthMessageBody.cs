@@ -160,10 +160,6 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http
             return OnConsumeAsync();
         }
         
-        private void ThrowIfCompleted()
-        {
-        }
-
         private void CreateReadResultFromConnectionReadResult()
         {
             if (_readResult.Buffer.Length >= _inputLength + _totalExaminedInPreviousReadResult)
