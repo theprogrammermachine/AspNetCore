@@ -14,7 +14,6 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http
     /// </summary>
     internal sealed class Http1UpgradeMessageBody : Http1MessageBody
     {
-        public bool _completed;
         public Http1UpgradeMessageBody(Http1Connection context)
             : base(context)
         {
@@ -26,19 +25,11 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http
 
         public override ValueTask<ReadResult> ReadAsync(CancellationToken cancellationToken = default)
         {
-            if (_completed)
-            {
-                throw new InvalidOperationException("Reading is not allowed after the reader was completed.");
-            }
             return _context.Input.ReadAsync(cancellationToken);
         }
 
         public override bool TryRead(out ReadResult result)
         {
-            if (_completed)
-            {
-                throw new InvalidOperationException("Reading is not allowed after the reader was completed.");
-            }
             return _context.Input.TryRead(out result);
         }
 
@@ -56,7 +47,6 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http
         {
             // Don't call Connection.Complete.
             _context.ReportApplicationError(exception);
-            _completed = true;
         }
 
         public override void CancelPendingRead()

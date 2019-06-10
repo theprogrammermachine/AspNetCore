@@ -1236,7 +1236,7 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Core.Tests
         }
 
         [Fact]
-        public async Task CompleteForContentLengthDoesNotCompleteConnectionPipeMakesReadReturnThrow()
+        public async Task CompleteForContentLengthDoesNotCompleteConnectionPipeMakes()
         {
             using (var input = new TestInput())
             {
@@ -1255,14 +1255,12 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Core.Tests
                 reader.Complete();
                 reader.AdvanceTo(readResult.Buffer.End);
 
-                Assert.Throws<InvalidOperationException>(() => reader.TryRead(out readResult));
-
                 await body.StopAsync();
             }
         }
 
         [Fact]
-        public async Task CompleteForChunkedDoesNotCompleteConnectionPipeMakesReadThrow()
+        public async Task CompleteForChunkedDoesNotCompleteConnectionPipe()
         {
             using (var input = new TestInput())
             {
@@ -1281,14 +1279,12 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Core.Tests
 
                 reader.Complete();
 
-                Assert.Throws<InvalidOperationException>(() => reader.TryRead(out readResult));
-
                 await body.StopAsync();
             }
         }
 
         [Fact]
-        public async Task CompleteForUpgradeDoesNotCompleteConnectionPipeMakesReadThrow()
+        public async Task CompleteForUpgradeDoesNotCompleteConnectionPipe()
         {
             using (var input = new TestInput())
             {
@@ -1307,12 +1303,9 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Core.Tests
 
                 reader.Complete();
 
-                Assert.Throws<InvalidOperationException>(() => reader.TryRead(out readResult));
-
                 await body.StopAsync();
             }
         }
-
 
         [Fact]
         public async Task CompleteForZeroByteBodyDoesNotCompleteConnectionPipeNoopsReads()

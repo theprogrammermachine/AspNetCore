@@ -58,6 +58,36 @@ namespace Microsoft.AspNetCore.Server.Kestrel.InMemory.FunctionalTests
         }
 
         [Fact]
+        public async Task Test()
+        {
+            var testContext = new TestServiceContext(LoggerFactory);
+
+            await using (var server = new TestServer(async context =>
+            {
+                // This will hang if 0 content length is not assumed by the server
+                context.Request.BodyReader.Complete();
+                await Task.CompletedTask;
+            }, testContext))
+            {
+                using (var connection = server.CreateConnection())
+                {
+                    await connection.Send(
+                        "POST / HTTP/1.0",
+                        "Content-Length: 11",
+                        "",
+                        "Hello World");
+                    await connection.ReceiveEnd(
+                        "HTTP/1.1 200 OK",
+                        "Connection: close",
+                        $"Date: {testContext.DateHeaderValue}",
+                        "Content-Length: 0",
+                        "",
+                        "");
+                }
+            }
+        }
+
+        [Fact]
         public async Task PipesAreNotPersistedAcrossRequests()
         {
             var responseBodyPersisted = false;

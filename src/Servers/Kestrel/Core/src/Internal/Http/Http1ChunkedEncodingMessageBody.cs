@@ -92,7 +92,6 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http
 
         public override void Complete(Exception exception)
         {
-            _requestBodyPipe.Reader.Complete();
             _context.ReportApplicationError(exception);
         }
 
