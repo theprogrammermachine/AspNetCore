@@ -64,7 +64,6 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Core.Adapter.Internal
 
                     try
                     {
-                        // TODO why?
                         if (result.IsCanceled)
                         {
                             break;

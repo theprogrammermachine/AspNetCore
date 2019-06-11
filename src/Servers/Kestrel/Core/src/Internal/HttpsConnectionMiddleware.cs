@@ -64,7 +64,7 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Https.Internal
             }
 
             _options = options;
-            _logger = loggerFactory?.CreateLogger(nameof(HttpsConnectionMiddleware));
+            _logger = loggerFactory?.CreateLogger<HttpsConnectionMiddleware>();
         }
         public Task OnConnectionAsync(ConnectionContext context)
         {
