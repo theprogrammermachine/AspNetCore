@@ -37,8 +37,10 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Core.Internal
         private ProtocolSelectionState _protocolSelectionState = ProtocolSelectionState.Initializing;
         private IRequestProcessor _requestProcessor;
         private Http1Connection _http1Connection;
+        private readonly IKestrelTrace _trace;
 
-        public HttpConnection(HttpConnectionContext context)
+
+        public HttpConnection(HttpConnectionContext context, IKestrelTrace trace)
         {
             _context = context;
             _systemClock = _context.ServiceContext.SystemClock;
