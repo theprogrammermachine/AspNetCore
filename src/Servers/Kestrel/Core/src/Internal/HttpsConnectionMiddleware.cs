@@ -26,7 +26,7 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Https.Internal
     {
         private readonly ConnectionDelegate _next;
 
-        private readonly HttpsConnectionAdapterOptions _options; // TODO remove these?
+        private readonly HttpsConnectionAdapterOptions _options;
         private readonly IKestrelTrace _trace;
         private readonly X509Certificate2 _serverCertificate;
         private readonly Func<ConnectionContext, string, X509Certificate2> _serverCertificateSelector;
@@ -234,7 +234,7 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Https.Internal
                 var adaptedPipeline = new AdaptedPipeline(original, new Pipe(inputPipeOptions), new Pipe(outputPipeOptions), _trace, memoryPoolFeature.MemoryPool.GetMinimumAllocSize());
                 context.Transport = adaptedPipeline;
 
-                using (adaptedPipeline)
+                //using (adaptedPipeline)
                 using (sslStream)
                 {
                     var task = adaptedPipeline.RunAsync(sslStream);
