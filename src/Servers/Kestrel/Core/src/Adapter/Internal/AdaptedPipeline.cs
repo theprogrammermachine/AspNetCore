@@ -64,11 +64,6 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Core.Adapter.Internal
 
                     try
                     {
-                        if (result.IsCanceled)
-                        {
-                            break;
-                        }
-
                         if (buffer.IsEmpty)
                         {
                             if (result.IsCompleted)
@@ -104,9 +99,6 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Core.Adapter.Internal
                 Output.Reader.Complete();
 
                 _transport.Output.Complete();
-
-                // Cancel any pending flushes due to back-pressure
-                Input.Writer.CancelPendingFlush();
             }
         }
 
@@ -137,7 +129,7 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Core.Adapter.Internal
 
                     var result = await Input.Writer.FlushAsync();
 
-                    if (result.IsCompleted || result.IsCanceled)
+                    if (result.IsCompleted)
                     {
                         break;
                     }
@@ -154,9 +146,6 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Core.Adapter.Internal
                 // The application could have ended the input pipe so complete
                 // the transport pipe as well
                 _transport.Input.Complete();
-
-                // Cancel any pending reads from the application
-                Output.Reader.CancelPendingRead();
             }
         }
 
