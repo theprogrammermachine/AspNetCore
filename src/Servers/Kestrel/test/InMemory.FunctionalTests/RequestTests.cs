@@ -58,7 +58,7 @@ namespace Microsoft.AspNetCore.Server.Kestrel.InMemory.FunctionalTests
         }
 
         [Fact]
-        public async Task Test()
+        public async Task CallingCompleteDoesNotLogGreaterThanInfo()
         {
             var testContext = new TestServiceContext(LoggerFactory);
 
@@ -85,6 +85,7 @@ namespace Microsoft.AspNetCore.Server.Kestrel.InMemory.FunctionalTests
                         "");
                 }
             }
+            Assert.All(TestSink.Writes, w => Assert.InRange(w.LogLevel, LogLevel.Trace, LogLevel.Information));
         }
 
         [Fact]
