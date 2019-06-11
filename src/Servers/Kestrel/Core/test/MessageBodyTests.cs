@@ -1236,7 +1236,7 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Core.Tests
         }
 
         [Fact]
-        public async Task CompleteForContentLengthDoesNotCompleteConnectionPipeMakes()
+        public async Task CompleteForContentLengthDoesNotCompleteConnectionPipe()
         {
             using (var input = new TestInput())
             {
