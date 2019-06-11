@@ -123,12 +123,6 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Core
 
                 async Task OnBind(ListenOptions options)
                 {
-                    // TODO Why?
-                    if (options.ConnectionAdapters.Any(c => c.IsHttps))
-                    {
-                        options.IsTls = true;
-                    }
-
                     // Add the HTTP middleware as the terminal connection middleware
                     options.UseHttpServer(options.ConnectionAdapters, ServiceContext, application, options.Protocols);
 

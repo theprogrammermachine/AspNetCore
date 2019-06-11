@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Http.Features;
 using System.IO.Pipelines;
 using Microsoft.AspNetCore.Server.Kestrel.Core.Internal;
 using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Infrastructure;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Microsoft.AspNetCore.Server.Kestrel.Https.Internal
 {
@@ -32,7 +33,7 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Https.Internal
         private readonly Func<ConnectionContext, string, X509Certificate2> _serverCertificateSelector;
 
         public HttpsConnectionMiddleware(ConnectionDelegate next, HttpsConnectionAdapterOptions options)
-          : this(next, options, loggerFactory: null)
+          : this(next, options, loggerFactory: NullLoggerFactory.Instance)
         {
         }
 
@@ -206,7 +207,7 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Https.Internal
                 readerScheduler: _options.Scheduler,
                 writerScheduler: PipeScheduler.Inline,
                 pauseWriterThreshold: _options.MaxInputBufferSize ?? 0,
-                resumeWriterThreshold: _options.MaxInputBufferSize ?? 0,
+                resumeWriterThreshold: _options.MaxInputBufferSize / 2 ?? 0,
                 useSynchronizationContext: false,
                 minimumSegmentSize: memoryPoolFeature.MemoryPool.GetMinimumSegmentSize()
             );
@@ -217,37 +218,38 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Https.Internal
                 readerScheduler: PipeScheduler.Inline,
                 writerScheduler: PipeScheduler.Inline,
                 pauseWriterThreshold: _options.MaxOutputBufferSize ?? 0,
-                resumeWriterThreshold: _options.MaxOutputBufferSize ?? 0,
+                resumeWriterThreshold: _options.MaxOutputBufferSize / 2 ?? 0,
                 useSynchronizationContext: false,
                 minimumSegmentSize: memoryPoolFeature.MemoryPool.GetMinimumSegmentSize()
             );
 
             var original = context.Transport;
 
-            var pipelineTask = Task.CompletedTask; 
             try
             {
                 // TODO eventually make SslDuplexStream : Stream, IDuplexPipe to avoid RawStream allocation and pipe allocations
                 var adaptedPipeline = new AdaptedPipeline(original, new Pipe(inputPipeOptions), new Pipe(outputPipeOptions), _logger, memoryPoolFeature.MemoryPool.GetMinimumAllocSize());
                 context.Transport = adaptedPipeline;
 
-                using (adaptedPipeline)
-                using (sslStream)
+                var pipelineTask = Task.CompletedTask;
+
+                try
                 {
-                    pipelineTask = adaptedPipeline.RunAsync(sslStream);
+                    using (adaptedPipeline)
+                    using (sslStream)
+                    {
+                        pipelineTask = adaptedPipeline.RunAsync(sslStream);
 
-                    await _next(context);
-
+                        await _next(context);
+                    }
+                }
+                finally
+                {
                     await pipelineTask;
                 }
             }
             finally
             {
-                if (!pipelineTask.IsCompleted)
-                {
-                    await pipelineTask;
-                }
-
                 // Restore the original so that it gets closed appropriately
                 context.Transport = original;
             }

@@ -101,9 +101,9 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Core
             }
         }
 
-        public bool IsHttp { get; set; } = true;
+        internal bool IsHttp { get; set; } = true;
 
-        public bool IsTls { get; set; }
+        internal bool IsTls { get; set; }
 
         /// <summary>
         /// Gets the name of this endpoint to display on command-line when the web server starts.
