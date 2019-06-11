@@ -371,8 +371,12 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Core.Internal
 
             _context.ConnectionContext.Abort(abortReason);
 
-            _adaptedTransport.Input.Complete();
-            _adaptedTransport.Output.Complete();
+            // TODO this probably should check if Https is available?
+            if (_context.ConnectionAdapters.Count > 0)
+            {
+                _adaptedTransport.Input.Complete();
+                _adaptedTransport.Output.Complete();
+            }
         }
 
         public void OnTimeout(TimeoutReason reason)

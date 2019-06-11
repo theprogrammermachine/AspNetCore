@@ -129,8 +129,6 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Https.Internal
             using (var cancellationTokeSource = new CancellationTokenSource(_options.HandshakeTimeout))
             using (cancellationTokeSource.Token.Register(state => ((ConnectionContext)state).Abort(), context))
             {
-                // TODO figure out if we need this.
-                //_options.OnHandshakeStarted?.Invoke();
                 try
                 {
                     // Adapt to the SslStream signature
@@ -229,6 +227,7 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Https.Internal
 
             var original = context.Transport;
 
+            var task = Task.CompletedTask; 
             try
             {
                 var adaptedPipeline = new AdaptedPipeline(original, new Pipe(inputPipeOptions), new Pipe(outputPipeOptions), _trace, memoryPoolFeature.MemoryPool.GetMinimumAllocSize());
@@ -237,7 +236,7 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Https.Internal
                 //using (adaptedPipeline)
                 using (sslStream)
                 {
-                    var task = adaptedPipeline.RunAsync(sslStream);
+                    task = adaptedPipeline.RunAsync(sslStream);
 
                     await _next(context);
 
@@ -246,6 +245,7 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Https.Internal
             }
             finally
             {
+                await task;
                 // Restore the original so that it gets closed appropriately
                 context.Transport = original;
             }

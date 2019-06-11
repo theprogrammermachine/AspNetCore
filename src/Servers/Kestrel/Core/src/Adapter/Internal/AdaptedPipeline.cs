@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Microsoft.AspNetCore.Server.Kestrel.Core.Adapter.Internal
 {
-    internal class AdaptedPipeline : IDuplexPipe
+    internal class AdaptedPipeline : IDuplexPipe, IDisposable
     {
         private readonly int _minAllocBufferSize;
 
@@ -64,6 +64,12 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Core.Adapter.Internal
 
                     try
                     {
+                        // TODO why?
+                        if (result.IsCanceled)
+                        {
+                            break;
+                        }
+
                         if (buffer.IsEmpty)
                         {
                             if (result.IsCompleted)
@@ -97,7 +103,11 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Core.Adapter.Internal
             finally
             {
                 Output.Reader.Complete();
+
                 _transport.Output.Complete();
+
+                // Cancel any pending flushes due to back-pressure
+                Input.Writer.CancelPendingFlush();
             }
         }
 
@@ -128,7 +138,7 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Core.Adapter.Internal
 
                     var result = await Input.Writer.FlushAsync();
 
-                    if (result.IsCompleted)
+                    if (result.IsCompleted || result.IsCanceled)
                     {
                         break;
                     }
@@ -145,7 +155,16 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Core.Adapter.Internal
                 // The application could have ended the input pipe so complete
                 // the transport pipe as well
                 _transport.Input.Complete();
+
+                // Cancel any pending reads from the application
+                Output.Reader.CancelPendingRead();
             }
+        }
+
+        public void Dispose()
+        {
+            Input.Reader.Complete();
+            Output.Writer.Complete();
         }
     }
 }
