@@ -5,7 +5,6 @@ using System;
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
-using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Infrastructure;
 using Microsoft.AspNetCore.Server.Kestrel.Https;
 using Microsoft.AspNetCore.Server.Kestrel.Https.Internal;
 using Microsoft.Extensions.DependencyInjection;
@@ -215,20 +214,17 @@ namespace Microsoft.AspNetCore.Hosting
         /// <returns>The <see cref="ListenOptions"/>.</returns>
         public static ListenOptions UseHttps(this ListenOptions listenOptions, HttpsConnectionAdapterOptions httpsOptions)
         {
-            // TODO why check if this is null?
             var loggerFactory = listenOptions.KestrelServerOptions?.ApplicationServices.GetRequiredService<ILoggerFactory>() ?? NullLoggerFactory.Instance;
+
             // Set the list of protocols from listen options
             httpsOptions.HttpProtocols = listenOptions.Protocols;
             httpsOptions.MaxInputBufferSize = listenOptions.KestrelServerOptions?.Limits.MaxRequestBufferSize;
             httpsOptions.MaxOutputBufferSize = listenOptions.KestrelServerOptions?.Limits.MaxResponseBufferSize;
-            // TODO I don't think we need this anymore but not sure.
 
             listenOptions.IsTls = true;
 
             listenOptions.Use(next =>
             {
-                // TODO how to resolve kestrel trace?
-                // Right now it is created in the kestrel server
                 var middleware = new HttpsConnectionMiddleware(next, httpsOptions, loggerFactory);
                 return middleware.OnConnectionAsync;
             });

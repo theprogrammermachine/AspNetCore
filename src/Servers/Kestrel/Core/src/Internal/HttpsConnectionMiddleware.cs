@@ -79,7 +79,6 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Https.Internal
             context.Features.Set<ITlsConnectionFeature>(feature);
             context.Features.Set<ITlsHandshakeFeature>(feature);
 
-            // TODO eventually make SslDuplexStream : Stream, IDuplexPipe to avoid RawStream allocation
             var transportStream = new RawStream(context.Transport.Input, context.Transport.Output);
 
             if (_options.ClientCertificateMode == ClientCertificateMode.NoCertificate)
@@ -170,7 +169,6 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Https.Internal
                         sslOptions.ApplicationProtocols.Add(SslApplicationProtocol.Http11);
                     }
 
-                    // TODO do we need this?
                     _options.OnAuthenticate?.Invoke(context, sslOptions);
 
                     await sslStream.AuthenticateAsServerAsync(sslOptions, CancellationToken.None);
@@ -188,7 +186,6 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Https.Internal
                     return;
                 }
             }
-           
 
             feature.ApplicationProtocol = sslStream.NegotiatedApplicationProtocol.Protocol;
             context.Features.Set<ITlsApplicationProtocolFeature>(feature);
@@ -227,25 +224,30 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Https.Internal
 
             var original = context.Transport;
 
-            var task = Task.CompletedTask; 
+            var pipelineTask = Task.CompletedTask; 
             try
             {
+                // TODO eventually make SslDuplexStream : Stream, IDuplexPipe to avoid RawStream allocation and pipe allocations
                 var adaptedPipeline = new AdaptedPipeline(original, new Pipe(inputPipeOptions), new Pipe(outputPipeOptions), _logger, memoryPoolFeature.MemoryPool.GetMinimumAllocSize());
                 context.Transport = adaptedPipeline;
 
-                //using (adaptedPipeline)
+                using (adaptedPipeline)
                 using (sslStream)
                 {
-                    task = adaptedPipeline.RunAsync(sslStream);
+                    pipelineTask = adaptedPipeline.RunAsync(sslStream);
 
                     await _next(context);
 
-                    await task;
+                    await pipelineTask;
                 }
             }
             finally
             {
-                await task;
+                if (!pipelineTask.IsCompleted)
+                {
+                    await pipelineTask;
+                }
+
                 // Restore the original so that it gets closed appropriately
                 context.Transport = original;
             }
@@ -273,6 +275,5 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Https.Internal
 
             return new X509Certificate2(certificate);
         }
-
     }
 }
