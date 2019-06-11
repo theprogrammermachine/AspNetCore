@@ -370,6 +370,12 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Core.Internal
             Debug.Assert(_adaptedTransport != null);
 
             _context.ConnectionContext.Abort(abortReason);
+
+            if (_context.ConnectionAdapters.Count > 0)
+            {
+                _adaptedTransport.Input.Complete();
+                _adaptedTransport.Output.Complete();
+            }
         }
 
         public void OnTimeout(TimeoutReason reason)

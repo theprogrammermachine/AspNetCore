@@ -233,19 +233,19 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Https.Internal
 
                 var pipelineTask = Task.CompletedTask;
 
-                try
+                using (adaptedPipeline)
+                using (sslStream)
                 {
-                    using (adaptedPipeline)
-                    using (sslStream)
+                    try
                     {
                         pipelineTask = adaptedPipeline.RunAsync(sslStream);
 
                         await _next(context);
                     }
-                }
-                finally
-                {
-                    await pipelineTask;
+                    finally
+                    {
+                        await pipelineTask;
+                    }
                 }
             }
             finally
