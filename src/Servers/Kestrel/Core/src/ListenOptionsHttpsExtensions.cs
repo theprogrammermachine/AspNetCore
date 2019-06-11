@@ -229,7 +229,7 @@ namespace Microsoft.AspNetCore.Hosting
             {
                 // TODO how to resolve kestrel trace?
                 // Right now it is created in the kestrel server
-                var middleware = new HttpsConnectionMiddleware(next, httpsOptions, new KestrelTrace(loggerFactory.CreateLogger(nameof(HttpsConnectionMiddleware))));
+                var middleware = new HttpsConnectionMiddleware(next, httpsOptions, loggerFactory);
                 return middleware.OnConnectionAsync;
             });
             return listenOptions;

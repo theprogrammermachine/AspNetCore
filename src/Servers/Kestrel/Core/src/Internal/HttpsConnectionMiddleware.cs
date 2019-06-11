@@ -27,16 +27,16 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Https.Internal
         private readonly ConnectionDelegate _next;
 
         private readonly HttpsConnectionAdapterOptions _options;
-        private readonly IKestrelTrace _trace;
+        private readonly ILogger _logger;
         private readonly X509Certificate2 _serverCertificate;
         private readonly Func<ConnectionContext, string, X509Certificate2> _serverCertificateSelector;
 
         public HttpsConnectionMiddleware(ConnectionDelegate next, HttpsConnectionAdapterOptions options)
-          : this(next, options, trace: null)
+          : this(next, options, loggerFactory: null)
         {
         }
 
-        public HttpsConnectionMiddleware(ConnectionDelegate next, HttpsConnectionAdapterOptions options, IKestrelTrace trace)
+        public HttpsConnectionMiddleware(ConnectionDelegate next, HttpsConnectionAdapterOptions options, ILoggerFactory loggerFactory)
         {
             if (options == null)
             {
@@ -64,7 +64,7 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Https.Internal
             }
 
             _options = options;
-            _trace = trace;
+            _logger = loggerFactory?.CreateLogger(nameof(HttpsConnectionMiddleware));
         }
         public Task OnConnectionAsync(ConnectionContext context)
         {
@@ -171,19 +171,19 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Https.Internal
                     }
 
                     // TODO do we need this?
-                    //_options.OnAuthenticate?.Invoke(context, sslOptions);
+                    _options.OnAuthenticate?.Invoke(context, sslOptions);
 
                     await sslStream.AuthenticateAsServerAsync(sslOptions, CancellationToken.None);
                 }
                 catch (OperationCanceledException)
                 {
-                    _trace?.LogDebug(2, CoreStrings.AuthenticationTimedOut);
+                    _logger?.LogDebug(2, CoreStrings.AuthenticationTimedOut);
                     sslStream.Dispose();
                     return;
                 }
                 catch (Exception ex) when (ex is IOException || ex is AuthenticationException)
                 {
-                    _trace?.LogDebug(1, ex, CoreStrings.AuthenticationFailed);
+                    _logger?.LogDebug(1, ex, CoreStrings.AuthenticationFailed);
                     sslStream.Dispose();
                     return;
                 }
@@ -230,7 +230,7 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Https.Internal
             var task = Task.CompletedTask; 
             try
             {
-                var adaptedPipeline = new AdaptedPipeline(original, new Pipe(inputPipeOptions), new Pipe(outputPipeOptions), _trace, memoryPoolFeature.MemoryPool.GetMinimumAllocSize());
+                var adaptedPipeline = new AdaptedPipeline(original, new Pipe(inputPipeOptions), new Pipe(outputPipeOptions), _logger, memoryPoolFeature.MemoryPool.GetMinimumAllocSize());
                 context.Transport = adaptedPipeline;
 
                 //using (adaptedPipeline)

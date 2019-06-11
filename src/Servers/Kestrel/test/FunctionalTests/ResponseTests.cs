@@ -583,7 +583,8 @@ namespace Microsoft.AspNetCore.Server.Kestrel.FunctionalTests
                     {
                         MinResponseDataRate = new MinDataRate(bytesPerSecond: 1024 * 1024, gracePeriod: TimeSpan.FromSeconds(2))
                     }
-                }
+                },
+                ExpectedConnectionMiddlewareCount = 1
             };
 
             testContext.InitializeHeartbeat();
