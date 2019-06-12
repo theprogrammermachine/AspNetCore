@@ -205,7 +205,7 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Https.Internal
             (
                 pool: memoryPoolFeature.MemoryPool,
                 readerScheduler: _options.Scheduler,
-                writerScheduler: _options.Scheduler,
+                writerScheduler: PipeScheduler.Inline,
                 pauseWriterThreshold: _options.MaxInputBufferSize ?? 0,
                 resumeWriterThreshold: _options.MaxInputBufferSize / 2 ?? 0,
                 useSynchronizationContext: false,
@@ -215,8 +215,8 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Https.Internal
             var outputPipeOptions = new PipeOptions
             (
                 pool: memoryPoolFeature.MemoryPool,
-                readerScheduler: _options.Scheduler,
-                writerScheduler: _options.Scheduler,
+                readerScheduler: PipeScheduler.Inline,
+                writerScheduler: PipeScheduler.Inline,
                 pauseWriterThreshold: _options.MaxOutputBufferSize ?? 0,
                 resumeWriterThreshold: _options.MaxOutputBufferSize / 2 ?? 0,
                 useSynchronizationContext: false,
