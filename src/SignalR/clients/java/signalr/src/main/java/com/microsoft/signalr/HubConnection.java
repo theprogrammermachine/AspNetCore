@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.gson.stream.JsonReader;
+import com.microsoft.signalr.interfaces.ConfigFetchingController;
 
 import io.reactivex.Completable;
 import io.reactivex.Observable;
@@ -31,6 +32,7 @@ public class HubConnection {
 
     private String baseUrl;
     private Transport transport;
+    private JsonConverterType converterType;
     private OnReceiveCallBack callback;
     private final CallbackMap handlers = new CallbackMap();
     private HubProtocol protocol;
@@ -117,14 +119,14 @@ public class HubConnection {
         return transport;
     }
 
-    HubConnection(String url, Transport transport, boolean skipNegotiate, HttpClient httpClient,
+    HubConnection(String url, Transport transport, JsonConverterType converterType, boolean skipNegotiate, HttpClient httpClient,
                   Single<String> accessTokenProvider, long handshakeResponseTimeout, Map<String, String> headers, TransportEnum transportEnum) {
         if (url == null || url.isEmpty()) {
             throw new IllegalArgumentException("A valid url is required.");
         }
 
         this.baseUrl = url;
-        this.protocol = new JsonHubProtocol();
+        this.protocol = new JsonHubProtocol(() -> HubConnection.this.converterType);
 
         if (accessTokenProvider != null) {
             this.accessTokenProvider = accessTokenProvider;
@@ -143,6 +145,8 @@ public class HubConnection {
         } else if (transportEnum != null) {
             this.transportEnum = transportEnum;
         }
+
+        this.converterType = converterType;
 
         if (handshakeResponseTimeout > 0) {
             this.handshakeResponseTimeout = handshakeResponseTimeout;
@@ -307,6 +311,10 @@ public class HubConnection {
         }
 
         this.baseUrl = url;
+    }
+
+    public void setConverterType(JsonConverterType converterType) {
+        this.converterType = converterType;
     }
 
     /**

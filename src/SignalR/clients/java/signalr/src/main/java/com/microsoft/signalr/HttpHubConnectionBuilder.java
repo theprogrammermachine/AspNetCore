@@ -20,6 +20,7 @@ public class HttpHubConnectionBuilder {
     private long handshakeResponseTimeout = 0;
     private Map<String, String> headers;
     private TransportEnum transportEnum;
+    private JsonConverterType converterType;
 
     HttpHubConnectionBuilder(String url) {
         this.url = url;
@@ -39,6 +40,11 @@ public class HttpHubConnectionBuilder {
      */
     public HttpHubConnectionBuilder withTransport(TransportEnum transportEnum) {
         this.transportEnum = transportEnum;
+        return this;
+    }
+
+    public HttpHubConnectionBuilder withJsonConverterType(JsonConverterType type) {
+        this.converterType = type;
         return this;
     }
 
@@ -119,6 +125,6 @@ public class HttpHubConnectionBuilder {
      * @return A new instance of {@link HubConnection}.
      */
     public HubConnection build() {
-        return new HubConnection(url, transport, skipNegotiate, httpClient, accessTokenProvider, handshakeResponseTimeout, headers, transportEnum);
+        return new HubConnection(url, transport, converterType, skipNegotiate, httpClient, accessTokenProvider, handshakeResponseTimeout, headers, transportEnum);
     }
 }

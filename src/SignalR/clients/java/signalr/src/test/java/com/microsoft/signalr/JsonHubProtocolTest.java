@@ -3,6 +3,8 @@
 
 package com.microsoft.signalr;
 
+import com.microsoft.signalr.interfaces.ConfigFetchingController;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
@@ -13,25 +15,50 @@ import org.junit.jupiter.api.Test;
 
 
 class JsonHubProtocolTest {
-    private JsonHubProtocol jsonHubProtocol = new JsonHubProtocol();
+    private JsonHubProtocol gsonHubProtocol = new JsonHubProtocol(new ConfigFetchingController() {
+        @Override
+        public JsonConverterType jsonConverterType() {
+            return JsonConverterType.GSON;
+        }
+    });
+    private JsonHubProtocol jacksonHubProtocol = new JsonHubProtocol(new ConfigFetchingController() {
+        @Override
+        public JsonConverterType jsonConverterType() {
+            return JsonConverterType.JACKSON;
+        }
+    });
 
     @Test
-    public void checkProtocolName() {
-        assertEquals("json", jsonHubProtocol.getName());
+    public void checkGsonProtocolName() {
+        assertEquals("json", gsonHubProtocol.getName());
     }
 
     @Test
-    public void checkVersionNumber() {
-        assertEquals(1, jsonHubProtocol.getVersion());
+    public void checkJacksonProtocolName() {
+        assertEquals("json", jacksonHubProtocol.getName());
     }
 
     @Test
-    public void checkTransferFormat() {
-        assertEquals(TransferFormat.TEXT, jsonHubProtocol.getTransferFormat());
+    public void checkGsonVersionNumber() {
+        assertEquals(1, gsonHubProtocol.getVersion());
     }
 
     @Test
-    public void verifyWriteMessage() {
+    public void checkJacksonVersionNumber() {
+        assertEquals(1, jacksonHubProtocol.getVersion());
+    }
+
+    @Test
+    public void checkGsonTransferFormat() {
+        assertEquals(TransferFormat.TEXT, jacksonHubProtocol.getTransferFormat());
+    }
+
+    @Test
+    public void checkJacksonTransferFormat() {
+        assertEquals(TransferFormat.TEXT, jacksonHubProtocol.getTransferFormat());
+    }
+
+    private void verifyJsonWriteMessage(JsonHubProtocol jsonHubProtocol) {
         InvocationMessage invocationMessage = new InvocationMessage(null, "test", new Object[] {"42"});
         String result = jsonHubProtocol.writeMessage(invocationMessage);
         String expectedResult = "{\"type\":1,\"target\":\"test\",\"arguments\":[\"42\"]}\u001E";
@@ -39,7 +66,16 @@ class JsonHubProtocolTest {
     }
 
     @Test
-    public void parsePingMessage() {
+    public void verifyGsonWriteMessage() {
+        verifyJsonWriteMessage(gsonHubProtocol);
+    }
+
+    @Test
+    public void verifyJacksonWriteMessage() {
+        verifyJsonWriteMessage(jacksonHubProtocol);
+    }
+
+    private void parsePintMessage(JsonHubProtocol jsonHubProtocol) {
         String stringifiedMessage = "{\"type\":6}\u001E";
         TestBinder binder = new TestBinder(PingMessage.getInstance());
 
@@ -51,7 +87,16 @@ class JsonHubProtocolTest {
     }
 
     @Test
-    public void parseCloseMessage() {
+    public void parseGsonPingMessage() {
+        parsePintMessage(gsonHubProtocol);
+    }
+
+    @Test
+    public void parseJacksonPingMessage() {
+        parsePintMessage(jacksonHubProtocol);
+    }
+
+    private void parseCloseMessage(JsonHubProtocol jsonHubProtocol) {
         String stringifiedMessage = "{\"type\":7}\u001E";
         TestBinder binder = new TestBinder(new CloseMessage());
 
@@ -69,7 +114,16 @@ class JsonHubProtocolTest {
     }
 
     @Test
-    public void parseCloseMessageWithError() {
+    public void parseGsonCloseMessage() {
+        parseCloseMessage(gsonHubProtocol);
+    }
+
+    @Test
+    public void parseJacksonCloseMessage() {
+        parseCloseMessage(jacksonHubProtocol);
+    }
+
+    private void parseCloseMessageWithError(JsonHubProtocol jsonHubProtocol) {
         String stringifiedMessage = "{\"type\":7,\"error\": \"There was an error\"}\u001E";
         TestBinder binder = new TestBinder(new CloseMessage("There was an error"));
 
@@ -87,7 +141,16 @@ class JsonHubProtocolTest {
     }
 
     @Test
-    public void parseSingleMessage() {
+    public void parseGsonCloseMessageWithError() {
+        parseCloseMessageWithError(gsonHubProtocol);
+    }
+
+    @Test
+    public void parseJacksonCloseMessageWithError() {
+        parseCloseMessageWithError(jacksonHubProtocol);
+    }
+
+    private void parseSingleMessage(JsonHubProtocol jsonHubProtocol) {
         String stringifiedMessage = "{\"type\":1,\"target\":\"test\",\"arguments\":[42]}\u001E";
         TestBinder binder = new TestBinder(new InvocationMessage("1", "test", new Object[] { 42 }));
 
@@ -109,7 +172,16 @@ class JsonHubProtocolTest {
     }
 
     @Test
-    public void parseSingleUnsupportedStreamInvocationMessage() {
+    public void parseGsonSingleMessage() {
+        parseSingleMessage(gsonHubProtocol);
+    }
+
+    @Test
+    public void parseJacksonSingleMessage() {
+        parseSingleMessage(jacksonHubProtocol);
+    }
+
+    private void parseSingleUnsupportedStreamInvocationMessage(JsonHubProtocol jsonHubProtocol) {
         String stringifiedMessage = "{\"type\":4,\"Id\":1,\"target\":\"test\",\"arguments\":[42]}\u001E";
         TestBinder binder = new TestBinder(new StreamInvocationMessage("1", "test", new Object[] { 42 }));
 
@@ -118,7 +190,16 @@ class JsonHubProtocolTest {
     }
 
     @Test
-    public void parseSingleUnsupportedCancelInvocationMessage() {
+    public void parseGsonSingleUnsupportedStreamInvocationMessage() {
+        parseSingleUnsupportedStreamInvocationMessage(gsonHubProtocol);
+    }
+
+    @Test
+    public void parseJacksonSingleUnsupportedStreamInvocationMessage() {
+        parseSingleUnsupportedStreamInvocationMessage(jacksonHubProtocol);
+    }
+
+    public void parseSingleUnsupportedCancelInvocationMessage(JsonHubProtocol jsonHubProtocol) {
         String stringifiedMessage = "{\"type\":5,\"invocationId\":123}\u001E";
         TestBinder binder = new TestBinder(null);
 
@@ -127,7 +208,16 @@ class JsonHubProtocolTest {
     }
 
     @Test
-    public void parseTwoMessages() {
+    public void parseGsonSingleUnsupportedCancelInvocationMessage() {
+        parseSingleUnsupportedCancelInvocationMessage(gsonHubProtocol);
+    }
+
+    @Test
+    public void parseJacksonSingleUnsupportedCancelInvocationMessage() {
+        parseSingleUnsupportedCancelInvocationMessage(jacksonHubProtocol);
+    }
+
+    public void parseTwoMessages(JsonHubProtocol jsonHubProtocol) {
         String twoMessages = "{\"type\":1,\"target\":\"one\",\"arguments\":[42]}\u001E{\"type\":1,\"target\":\"two\",\"arguments\":[43]}\u001E";
         TestBinder binder = new TestBinder(new InvocationMessage("1", "one", new Object[] { 42 }));
 
@@ -158,7 +248,16 @@ class JsonHubProtocolTest {
     }
 
     @Test
-    public void parseSingleMessageMutipleArgs() {
+    public void parseGsonTwoMessages() {
+        parseTwoMessages(gsonHubProtocol);
+    }
+
+    @Test
+    public void parseJacksonTwoMessages() {
+        parseTwoMessages(jacksonHubProtocol);
+    }
+
+    public void parseSingleMessageMultipleArgs(JsonHubProtocol jsonHubProtocol) {
         String stringifiedMessage = "{\"type\":1,\"target\":\"test\",\"arguments\":[42, 24]}\u001E";
         TestBinder binder = new TestBinder(new InvocationMessage("1", "test", new Object[] { 42, 24 }));
 
@@ -177,7 +276,16 @@ class JsonHubProtocolTest {
     }
 
     @Test
-    public void parseMessageWithOutOfOrderProperties() {
+    public void parseGsonSingleMessageMultipleArgs() {
+        parseSingleMessageMultipleArgs(gsonHubProtocol);
+    }
+
+    @Test
+    public void parseJacksonSingleMessageMultipleArgs() {
+        parseSingleMessageMultipleArgs(jacksonHubProtocol);
+    }
+
+    public void parseMessageWithOutOfOrderProperties(JsonHubProtocol jsonHubProtocol) {
         String stringifiedMessage = "{\"arguments\":[42, 24],\"type\":1,\"target\":\"test\"}\u001E";
         TestBinder binder = new TestBinder(new InvocationMessage("1", "test", new Object[] { 42, 24 }));
 
@@ -196,7 +304,16 @@ class JsonHubProtocolTest {
     }
 
     @Test
-    public void parseCompletionMessageWithOutOfOrderProperties() {
+    public void parseGsonMessageWithOutOfOrderProperties() {
+        parseMessageWithOutOfOrderProperties(gsonHubProtocol);
+    }
+
+    @Test
+    public void parseJacksonMessageWithOutOfOrderProperties() {
+        parseMessageWithOutOfOrderProperties(jacksonHubProtocol);
+    }
+
+    public void parseCompletionMessageWithOutOfOrderProperties(JsonHubProtocol jsonHubProtocol) {
         String stringifiedMessage = "{\"type\":3,\"result\":42,\"invocationId\":\"1\"}\u001E";
         TestBinder binder = new TestBinder(new CompletionMessage("1", 42, null));
 
@@ -211,7 +328,16 @@ class JsonHubProtocolTest {
     }
 
     @Test
-    public void invocationBindingFailureWhileParsingTooManyArgumentsWithOutOfOrderProperties() {
+    public void parseGsonCompletionMessageWithOutOfOrderProperties() {
+        parseCompletionMessageWithOutOfOrderProperties(gsonHubProtocol);
+    }
+
+    @Test
+    public void parseJacksonCompletionMessageWithOutOfOrderProperties() {
+        parseCompletionMessageWithOutOfOrderProperties(jacksonHubProtocol);
+    }
+
+    public void invocationBindingFailureWhileParsingTooManyArgumentsWithOutOfOrderProperties(JsonHubProtocol jsonHubProtocol) {
         String stringifiedMessage = "{\"arguments\":[42, 24],\"type\":1,\"target\":\"test\"}\u001E";
         TestBinder binder = new TestBinder(new InvocationMessage(null, "test", new Object[] { 42 }));
 
@@ -223,7 +349,16 @@ class JsonHubProtocolTest {
     }
 
     @Test
-    public void invocationBindingFailureWhileParsingTooManyArguments() {
+    public void invocationGsonBindingFailureWhileParsingTooManyArgumentsWithOutOfOrderProperties() {
+        invocationBindingFailureWhileParsingTooManyArgumentsWithOutOfOrderProperties(gsonHubProtocol);
+    }
+
+    @Test
+    public void invocationJacksonBindingFailureWhileParsingTooManyArgumentsWithOutOfOrderProperties() {
+        invocationBindingFailureWhileParsingTooManyArgumentsWithOutOfOrderProperties(jacksonHubProtocol);
+    }
+
+    public void invocationBindingFailureWhileParsingTooManyArguments(JsonHubProtocol jsonHubProtocol) {
         String stringifiedMessage = "{\"type\":1,\"target\":\"test\",\"arguments\":[42, 24]}\u001E";
         TestBinder binder = new TestBinder(new InvocationMessage(null, "test", new Object[] { 42 }));
 
@@ -235,7 +370,16 @@ class JsonHubProtocolTest {
     }
 
     @Test
-    public void invocationBindingFailureWhileParsingTooFewArguments() {
+    public void invocationGsonBindingFailureWhileParsingTooManyArguments() {
+        invocationBindingFailureWhileParsingTooManyArguments(gsonHubProtocol);
+    }
+
+    @Test
+    public void invocationJacksonBindingFailureWhileParsingTooManyArguments() {
+        invocationBindingFailureWhileParsingTooManyArguments(jacksonHubProtocol);
+    }
+
+    public void invocationBindingFailureWhileParsingTooFewArguments(JsonHubProtocol jsonHubProtocol) {
         String stringifiedMessage = "{\"type\":1,\"target\":\"test\",\"arguments\":[42]}\u001E";
         TestBinder binder = new TestBinder(new InvocationMessage(null, "test", new Object[] { 42, 24 }));
 
@@ -247,7 +391,16 @@ class JsonHubProtocolTest {
     }
 
     @Test
-    public void invocationBindingFailureWhenParsingIncorrectType() {
+    public void invocationGsonBindingFailureWhileParsingTooFewArguments() {
+        invocationBindingFailureWhileParsingTooFewArguments(gsonHubProtocol);
+    }
+
+    @Test
+    public void invocationJacksonBindingFailureWhileParsingTooFewArguments() {
+        invocationBindingFailureWhileParsingTooFewArguments(jacksonHubProtocol);
+    }
+
+    public void invocationBindingFailureWhenParsingIncorrectType(JsonHubProtocol jsonHubProtocol) {
         String stringifiedMessage = "{\"type\":1,\"target\":\"test\",\"arguments\":[\"true\"]}\u001E";
         TestBinder binder = new TestBinder(new InvocationMessage(null, "test", new Object[] { 42 }));
 
@@ -259,7 +412,16 @@ class JsonHubProtocolTest {
     }
 
     @Test
-    public void invocationBindingFailureStillReadsJsonPayloadAfterFailure() {
+    public void invocationGsonBindingFailureWhenParsingIncorrectType() {
+        invocationBindingFailureWhenParsingIncorrectType(gsonHubProtocol);
+    }
+
+    @Test
+    public void invocationJacksonBindingFailureWhenParsingIncorrectType() {
+        invocationBindingFailureWhenParsingIncorrectType(jacksonHubProtocol);
+    }
+
+    public void invocationBindingFailureStillReadsJsonPayloadAfterFailure(JsonHubProtocol jsonHubProtocol) {
         String stringifiedMessage = "{\"type\":1,\"target\":\"test\",\"arguments\":[\"true\"],\"invocationId\":\"123\"}\u001E";
         TestBinder binder = new TestBinder(new InvocationMessage(null, "test", new Object[] { 42 }));
 
@@ -272,13 +434,32 @@ class JsonHubProtocolTest {
     }
 
     @Test
-    public void errorWhileParsingIncompleteMessage() {
+    public void invocationGsonBindingFailureStillReadsJsonPayloadAfterFailure() {
+        invocationBindingFailureStillReadsJsonPayloadAfterFailure(gsonHubProtocol);
+    }
+
+    @Test
+    public void invocationJacksonBindingFailureStillReadsJsonPayloadAfterFailure() {
+        invocationBindingFailureStillReadsJsonPayloadAfterFailure(jacksonHubProtocol);
+    }
+
+    public void errorWhileParsingIncompleteMessage(JsonHubProtocol jsonHubProtocol) {
         String stringifiedMessage = "{\"type\":1,\"target\":\"test\",\"arguments\":";
         TestBinder binder = new TestBinder(new InvocationMessage(null, "test", new Object[] { 42, 24 }));
 
         RuntimeException exception = assertThrows(RuntimeException.class,
                 () -> jsonHubProtocol.parseMessages(stringifiedMessage, binder));
         assertEquals("Message is incomplete.", exception.getMessage());
+    }
+
+    @Test
+    public void errorGsonWhileParsingIncompleteMessage() {
+        errorWhileParsingIncompleteMessage(gsonHubProtocol);
+    }
+
+    @Test
+    public void errorJacksonWhileParsingIncompleteMessage() {
+        errorWhileParsingIncompleteMessage(jacksonHubProtocol);
     }
 
     private class TestBinder implements InvocationBinder {
