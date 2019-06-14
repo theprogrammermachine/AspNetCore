@@ -5,11 +5,13 @@ package com.microsoft.signalr;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.security.Permission;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.TreeNode;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -17,6 +19,8 @@ import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.microsoft.signalr.interfaces.ConfigFetchingController;
+
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 class JsonHubProtocol implements HubProtocol {
     private final JsonParser jsonParser = new JsonParser();
@@ -181,9 +185,13 @@ class JsonHubProtocol implements HubProtocol {
                         default:
                             break;
                     }
-                } catch (Exception ex) {
+                }
+                catch (IOException ex) {
                     ex.printStackTrace();
-                    throw new RuntimeException(ex.getMessage());
+                }
+                catch (Exception ex) {
+                    ex.printStackTrace();
+                    throw ex;
                 }
             } else if (configPresenter.jsonConverterType() == JsonConverterType.JACKSON) {
 
@@ -222,17 +230,22 @@ class JsonHubProtocol implements HubProtocol {
                                 result = parser.readValueAs(binder.getReturnType(invocationId));
                                 break;
                             case "arguments":
-                                if (target != null) {
-                                    try {
-                                        parser.nextToken();
-                                        List<Class<?>> types = binder.getParameterTypes(target);
-                                        TreeNode tn = parser.readValueAsTree();
-                                        for (int counter = 0; counter < types.size(); counter++)
-                                            arguments.add(JacksonCore.getMapper().treeToValue(tn.get(counter), types.get(counter)));
-                                    } catch (Exception ex) {
-                                        argumentBindingException = ex;
-                                        ex.printStackTrace();
+                                try {
+                                    parser.nextToken();
+                                    List<Class<?>> types = binder.getParameterTypes(target);
+                                    TreeNode tn = parser.readValueAsTree();
+                                    if (tn.size() != types.size()) throw new RuntimeException("Invocation provides " + tn.size() + " argument(s) but target expects " + types.size() + ".");
+                                    for (int counter = 0; counter < tn.size(); counter++)
+                                        arguments.add(JacksonCore.getMapper().treeToValue(tn.get(counter), types.get(counter)));
+                                } catch (Exception ex) {
+                                    argumentBindingException = ex;
+                                    if (ex instanceof InvalidFormatException) {
+                                        if (ex.toString().contains("Cannot deserialize value of type") && ex.toString().contains("java.lang.Integer")) {
+                                            argumentBindingException = new NumberFormatException("java.lang.NumberFormatException: For input string: \""
+                                                    + ((InvalidFormatException) ex).getValue() + "\"");
+                                        }
                                     }
+                                    ex.printStackTrace();
                                 }
                                 break;
                             case "headers":
@@ -247,7 +260,17 @@ class JsonHubProtocol implements HubProtocol {
 
                     switch (messageType) {
                         case INVOCATION:
-                            hubMessages.add(new InvocationMessage(invocationId, target, arguments.toArray(new Object[0])));
+                            if (argumentBindingException != null) {
+                                argumentBindingException.printStackTrace();
+                                hubMessages.add(new InvocationBindingFailureMessage(invocationId, target, argumentBindingException));
+                            } else {
+                                if (arguments == null) {
+                                    hubMessages.add(new InvocationMessage(invocationId, target, new Object[0]));
+                                } else {
+                                    hubMessages.add(new InvocationMessage(invocationId, target, arguments.toArray(new Object[0])));
+                                }
+                            }
+
                             break;
                         case COMPLETION:
                             hubMessages.add(new CompletionMessage(invocationId, result, error));
@@ -271,9 +294,12 @@ class JsonHubProtocol implements HubProtocol {
                         default:
                             break;
                     }
-                } catch (Exception ex) {
+                } catch (IOException ex) {
                     ex.printStackTrace();
-                    throw new RuntimeException(ex.getMessage());
+                }
+                catch (Exception ex) {
+                    ex.printStackTrace();
+                    throw ex;
                 }
             }
         }

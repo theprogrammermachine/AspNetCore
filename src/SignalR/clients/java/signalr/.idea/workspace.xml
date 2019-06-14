@@ -2,52 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bfab48e0-8ac2-4696-8ce6-34aa70000d5d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__apiguardian_api_1_0_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_fasterxml_jackson_core_jackson_annotations_2_9_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_fasterxml_jackson_core_jackson_core_2_9_9.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_fasterxml_jackson_core_jackson_databind_2_9_9.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_code_gson_gson_2_8_5.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_squareup_okhttp3_okhttp_3_11_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_squareup_okio_okio_1_14_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__gson_2_8_5.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__io_reactivex_rxjava2_rxjava_2_2_3.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__jackson_annotations_2_9_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__jackson_core_2_9_9.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__jackson_databind_2_9_9.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__junit_jupiter_api_5_3_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__junit_jupiter_engine_5_3_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__junit_jupiter_params_5_3_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__junit_platform_commons_1_3_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__junit_platform_engine_1_3_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__okhttp_3_11_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__okio_1_14_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__opentest4j_1_1_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_apiguardian_apiguardian_api_1_0_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_junit_jupiter_junit_jupiter_api_5_3_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_junit_jupiter_junit_jupiter_engine_5_3_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_junit_jupiter_junit_jupiter_params_5_3_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_junit_platform_junit_platform_commons_1_3_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_junit_platform_junit_platform_engine_1_3_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_opentest4j_opentest4j_1_1_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_reactivestreams_reactive_streams_1_0_2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_slf4j_slf4j_api_1_7_25.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_slf4j_slf4j_jdk14_1_7_25.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__reactive_streams_1_0_2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__rxjava_2_2_3.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__slf4j_api_1_7_25.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__slf4j_jdk14_1_7_25.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/main.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/microsoft/signalr/GsonCore.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/microsoft/signalr/JacksonCore.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/microsoft/signalr/JsonConverterType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/microsoft/signalr/interfaces/ConfigFetchingController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/microsoft/signalr/HttpHubConnectionBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/microsoft/signalr/HttpHubConnectionBuilder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/microsoft/signalr/HubConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/microsoft/signalr/HubConnection.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/microsoft/signalr/JsonHubProtocol.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/microsoft/signalr/JsonHubProtocol.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/microsoft/signalr/JsonHubProtocolTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/microsoft/signalr/JsonHubProtocolTest.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/main/out/" />
@@ -70,7 +25,33 @@
     </system>
   </component>
   <component name="FileEditorManager">
-    <leaf />
+    <leaf>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/microsoft/signalr/JsonHubProtocol.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="102">
+              <caret line="236" selection-start-line="236" selection-end-line="236" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/java/com/microsoft/signalr/JsonHubProtocolTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="108">
+              <caret line="291" column="57" lean-forward="true" selection-start-line="291" selection-start-column="57" selection-end-line="291" selection-end-column="57" />
+              <folding>
+                <element signature="e#1340#1341#0" expanded="true" />
+                <element signature="e#1404#1405#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
@@ -87,10 +68,10 @@
         <option value="$PROJECT_DIR$/src/main/java/com/microsoft/signalr/interfaces/ConfigFetchigController.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/microsoft/signalr/interfaces/ConfigFetchingController.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/microsoft/signalr/JacksonCore.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/microsoft/signalr/JsonHubProtocol.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/microsoft/signalr/HubConnection.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/microsoft/signalr/HttpHubConnectionBuilder.java" />
         <option value="$PROJECT_DIR$/src/test/java/com/microsoft/signalr/JsonHubProtocolTest.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/microsoft/signalr/JsonHubProtocol.java" />
       </list>
     </option>
   </component>
@@ -211,15 +192,40 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="HubConnectionTest - 2019.06.14 at 19h 22m 28s.xml">
-      <configuration name="HubConnectionTest" configurationId="AndroidJUnit" />
+    <history-entry file="JsonHubProtocolTest - 2019.06.14 at 20h 10m 26s.xml">
+      <configuration name="JsonHubProtocolTest" configurationId="AndroidJUnit" />
     </history-entry>
-    <history-entry file="JsonHubProtocolTest - 2019.06.14 at 19h 27m 46s.xml">
+    <history-entry file="JsonHubProtocolTest - 2019.06.14 at 20h 11m 52s.xml">
+      <configuration name="JsonHubProtocolTest" configurationId="AndroidJUnit" />
+    </history-entry>
+    <history-entry file="JsonHubProtocolTest - 2019.06.14 at 20h 15m 31s.xml">
+      <configuration name="JsonHubProtocolTest" configurationId="AndroidJUnit" />
+    </history-entry>
+    <history-entry file="JsonHubProtocolTest - 2019.06.14 at 20h 16m 20s.xml">
+      <configuration name="JsonHubProtocolTest" configurationId="AndroidJUnit" />
+    </history-entry>
+    <history-entry file="JsonHubProtocolTest - 2019.06.14 at 20h 18m 04s.xml">
+      <configuration name="JsonHubProtocolTest" configurationId="AndroidJUnit" />
+    </history-entry>
+    <history-entry file="JsonHubProtocolTest - 2019.06.14 at 20h 21m 40s.xml">
+      <configuration name="JsonHubProtocolTest" configurationId="AndroidJUnit" />
+    </history-entry>
+    <history-entry file="JsonHubProtocolTest - 2019.06.14 at 20h 29m 37s.xml">
+      <configuration name="JsonHubProtocolTest" configurationId="AndroidJUnit" />
+    </history-entry>
+    <history-entry file="JsonHubProtocolTest - 2019.06.14 at 20h 30m 58s.xml">
+      <configuration name="JsonHubProtocolTest" configurationId="AndroidJUnit" />
+    </history-entry>
+    <history-entry file="JsonHubProtocolTest - 2019.06.14 at 20h 34m 00s.xml">
+      <configuration name="JsonHubProtocolTest" configurationId="AndroidJUnit" />
+    </history-entry>
+    <history-entry file="JsonHubProtocolTest - 2019.06.14 at 20h 38m 27s.xml">
       <configuration name="JsonHubProtocolTest" configurationId="AndroidJUnit" />
     </history-entry>
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" weight="0.6805369" />
       <window_info id="Structure" side_tool="true" />
@@ -316,10 +322,52 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/microsoft/signalr/HubConnection.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="91">
+          <caret line="44" column="55" lean-forward="true" selection-start-line="44" selection-start-column="55" selection-end-line="44" selection-end-column="55" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../../../../../../../../AndroidStudioData/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.9.9/c8a91180aef81d62f44b27cef42bacb168871a4c/jackson-core-2.9.9-sources.jar!/com/fasterxml/jackson/core/TreeNode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="302">
+          <caret line="70" column="8" selection-start-line="70" selection-start-column="8" selection-end-line="70" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/microsoft/signalr/CompletionMessage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="64">
+          <caret line="6" column="39" lean-forward="true" selection-start-line="6" selection-start-column="39" selection-end-line="6" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/microsoft/signalr/HubMessageType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="10" column="4" selection-start-line="10" selection-start-column="4" selection-end-line="10" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../../../../../../../../AndroidStudioData/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-databind/2.9.9/8b717e1bc24a642cee070ae3860f04eb20c92779/jackson-databind-2.9.9-sources.jar!/com/fasterxml/jackson/databind/exc/InvalidFormatException.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$APPLICATION_HOME_DIR$/jre/jre/lib/rt.jar!/java/lang/NumberFormatException.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="18" column="77" selection-start-line="18" selection-start-column="41" selection-end-line="18" selection-end-column="77" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/com/microsoft/signalr/JsonHubProtocolTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="142">
-          <caret line="427" column="90" lean-forward="true" selection-start-line="427" selection-start-column="90" selection-end-line="427" selection-end-column="90" />
+        <state relative-caret-position="108">
+          <caret line="291" column="57" lean-forward="true" selection-start-line="291" selection-start-column="57" selection-end-line="291" selection-end-column="57" />
           <folding>
             <element signature="e#1340#1341#0" expanded="true" />
             <element signature="e#1404#1405#0" expanded="true" />
@@ -329,18 +377,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/microsoft/signalr/JsonHubProtocol.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="295">
-          <caret line="232" column="70" lean-forward="true" selection-start-line="232" selection-start-column="70" selection-end-line="232" selection-end-column="70" />
+        <state relative-caret-position="102">
+          <caret line="236" selection-start-line="236" selection-end-line="236" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/microsoft/signalr/HubConnection.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="91">
-          <caret line="44" column="55" lean-forward="true" selection-start-line="44" selection-start-column="55" selection-end-line="44" selection-end-column="55" />
         </state>
       </provider>
     </entry>
